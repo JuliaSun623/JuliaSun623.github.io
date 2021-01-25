@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yu Sun</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Yu Sun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 25 Jan 2021 14:49:49 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Regression</title>
+      <link>http://localhost:1313/posts/regression/</link>
+      <pubDate>Mon, 25 Jan 2021 14:49:49 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/regression/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>关于我</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Mon, 25 Jan 2021 11:03:56 +0800</pubDate>
+      
+      <guid>http://localhost:1313/about/</guid>
+      <description>Yu Sun EDUCATION Fudan University (Sep 2017-Jun 2021) Major: Computer Science GPA: 3.72/4.0 (top 5%, 5/93) Major GPA: 3.83/4.0 Relevant Course: Linear Algebra (A), Mathematical Analysis (A), Programming Language (A), Data Structure (A), Discrete Mathematics (A), Introduction to Database (A), Principles of Computer Systems (A), Operating System (A-), Probability and Statistics (A), Computer Network (A), Natural Language Process (A-), Digital Image Process(A), Software Engineer(A) Honor: The Second Prize Scholarship (three</description>
+    </item>
+    
+  </channel>
+</rss>
