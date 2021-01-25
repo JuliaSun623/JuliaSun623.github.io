@@ -22,7 +22,7 @@
       <pubDate>Mon, 25 Jan 2021 14:49:49 +0800</pubDate>
       
       <guid>http://localhost:1313/post/regression/</guid>
-      <description>引入问题 预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。</description>
+      <description>预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝</description>
     </item>
     
   </channel>

@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yu Sun" /><meta name="description" content="引入问题 预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Yu Sun" /><meta name="description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -40,23 +40,23 @@
 
 
 <meta property="og:title" content="Regression: Case Study" />
-<meta property="og:description" content="引入问题 预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。" />
+<meta property="og:description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/regression/" />
 <meta property="article:published_time" content="2021-01-25T14:49:49+08:00" />
 <meta property="article:modified_time" content="2021-01-25T14:49:49+08:00" />
 <meta itemprop="name" content="Regression: Case Study">
-<meta itemprop="description" content="引入问题 预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。">
+<meta itemprop="description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝">
 <meta itemprop="datePublished" content="2021-01-25T14:49:49+08:00" />
 <meta itemprop="dateModified" content="2021-01-25T14:49:49+08:00" />
-<meta itemprop="wordCount" content="61">
+<meta itemprop="wordCount" content="892">
 
 
 
 <meta itemprop="keywords" content="机器学习,NLP,Regression," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Regression: Case Study"/>
-<meta name="twitter:description" content="引入问题 预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。"/>
+<meta name="twitter:description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -149,9 +149,16 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#引入问题">引入问题</a>
+    <li>
       <ul>
-        <li><a href="#heading"></a></li>
+        <li><a href="#设定参数">设定参数</a></li>
+        <li><a href="#regression过程">Regression过程</a>
+          <ul>
+            <li><a href="#1-确定modelfunction-set">1. 确定model（function set）</a></li>
+            <li><a href="#2-定义如何判断为好的function">2. 定义如何判断为好的function</a></li>
+            <li><a href="#3-选择最好的function">3. 选择最好的function</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -159,9 +166,58 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="引入问题">引入问题</h1>
-<p>预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。</p>
-<h2 id="heading"></h2>
+      <p>预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。</p>
+<h2 id="设定参数">设定参数</h2>
+<img src='https://s3.ax1x.com/2021/01/25/sL7ECj.jpg' style="zoom:67%;">
+<ul>
+<li>
+<p>输入$x$：一只宝可梦，用下标表示其属性
+$x_{cp}$：宝可梦进化前的cp值</p>
+<p>$x_s$：宝可梦的物种</p>
+<p>$x_{hp}$：该宝可梦的生命值</p>
+<p>$x_w$：宝可梦的重量</p>
+<p>$x_h$：宝可梦的高度</p>
+</li>
+<li>
+<p>$y$：进化后的cp值（标量）</p>
+</li>
+</ul>
+<h2 id="regression过程">Regression过程</h2>
+<h3 id="1-确定modelfunction-set">1. 确定model（function set）</h3>
+<p>这里选择function set的方法是凭经验去一种种地试：</p>
+<h4 id="linear-model线性模型">Linear Model（线性模型）</h4>
+<p>函数通式：$y=b+w·x_{cp}$，其中$b,w$是未知参数，可以是任何数值。因此，根据不同的$b,w$，可以生成无穷多的不同function。因此这个通式表示的就是一个Linear的model，即function set：
+$$
+y=b+\sum w_ix_i
+$$</p>
+<ul>
+<li>$x_i$：输入$x$的属性，称为feature</li>
+<li>$w$：weight</li>
+<li>$b$：bias</li>
+</ul>
+<img src='https://s3.ax1x.com/2021/01/25/sOpsJ0.jpg' style="zoom:67%;">
+<h3 id="2-定义如何判断为好的function">2. 定义如何判断为好的function</h3>
+<p>设定参数：</p>
+<ul>
+<li>$x^i$：第i只宝可梦（上标一个完整的object的编号）</li>
+<li>$x_j$：宝可梦的属性j（下表表示一个object的component）</li>
+<li>$\hat y^i$：$\hat y$表示输出$y$的完整个体（由于regression的输出值是标量，其中并没有component，只是一个简单的数值；但是未来如果考虑structured Learning的时候，输出的object可能是有structured的，所以还是需要用上标下标来表示一个完整的output的object和它包含的component）</li>
+</ul>
+<h4 id="loss-function-l">Loss function $L$</h4>
+<p><strong>loss function是函数的函数</strong>：输入是一个函数，输出是这个函数有多差。因此$L$越大，输入的函数表现越差
+$$
+L(f)=L(w,b)=\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
+$$
+最后一个公式可以自己定义，主要是来评估输出$y$和输入函数的差异。</p>
+<img src='https://s3.ax1x.com/2021/01/25/sOC526.jpg' style="zoom:67%;">
+<h3 id="3-选择最好的function">3. 选择最好的function</h3>
+<p>要function表现好，就要使得损失函数最小：$f^<em>=arg\ min_fL(f)$，即：
+$$
+w^</em>,b^*=arg\ min_{w,b}L(w,b)=arg\ min_{w,b}\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
+$$
+这里用到的就是Gradient Descent（梯度下降）。</p>
+<img src='https://s3.ax1x.com/2021/01/25/sOPHS0.jpg' style="zoom:67%;">
+<h4 id="gradient-descent">Gradient Descent</h4>
 
     </div>
 
