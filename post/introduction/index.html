@@ -49,7 +49,7 @@
 <meta itemprop="description" content="本篇主要介绍机器学习主要概念。 Learning Map **机器学习就是自动找函数。**例如，语音识别要找到从声音讯号到文字的函数，图像识别要找从图片到文字的函数">
 <meta itemprop="datePublished" content="2021-01-25T15:43:24+08:00" />
 <meta itemprop="dateModified" content="2021-01-25T15:43:24+08:00" />
-<meta itemprop="wordCount" content="827">
+<meta itemprop="wordCount" content="1338">
 
 
 
@@ -155,6 +155,17 @@
         <li><a href="#1-找什么样的函数">1. 找什么样的函数</a></li>
         <li><a href="#2-如何告诉机器你要找的函数">2. 如何告诉机器你要找的函数</a></li>
         <li><a href="#3-机器如何找到函数">3. 机器如何找到函数</a></li>
+        <li><a href="#一些前沿技术">一些前沿技术</a>
+          <ul>
+            <li><a href="#explainable-ai">Explainable AI</a></li>
+            <li><a href="#adversarial-attack">Adversarial Attack</a></li>
+            <li><a href="#network-compression">Network Compression</a></li>
+            <li><a href="#anomaly-detection">Anomaly Detection</a></li>
+            <li><a href="#transfer-learning-domain-adversarial-learning">Transfer Learning (Domain Adversarial Learning)</a></li>
+            <li><a href="#meta-learning">Meta Learning</a></li>
+          </ul>
+        </li>
+        <li><a href="#life-long-learning">Life-long Learning</a></li>
       </ul>
     </li>
   </ul>
@@ -200,6 +211,25 @@
 <li><strong>Unsupervised Learning（无监督学习）</strong>：给机器大量数据，但是无label。<em>「作业中的Unsupervised Learning和GAN」</em></li>
 </ul>
 <h2 id="3-机器如何找到函数">3. 机器如何找到函数</h2>
+<ol>
+<li>给定函数寻找范围：Linear（线性函数）、Network Architecture（网络架构：RNN，CNN）</li>
+<li>函数寻找方法：Gradient Descent（梯度下降）。「前两个作业是自行实现，之后的作业都实用pytorch中的内置函数」</li>
+</ol>
+<h2 id="一些前沿技术">一些前沿技术</h2>
+<h3 id="explainable-ai">Explainable AI</h3>
+<p>现在很多深度学习技术都是黑盒技术，比如给定一只猫的图片，机器学习判断出这是一只猫，但是并不能解释为什么这是一只猫。Explainable AI可以，</p>
+<h3 id="adversarial-attack">Adversarial Attack</h3>
+<p>人用恶意地目的，特意制造一些noise，来判断机器的鲁棒性。</p>
+<h3 id="network-compression">Network Compression</h3>
+<p>得到很高的准确率有可能需要一个很大的模型，这个任务的目的就是想压缩模型，使其能移植到手机等移动设备上。</p>
+<h3 id="anomaly-detection">Anomaly Detection</h3>
+<p>机器处理结果之外的数据。例如动物识别系统，如果输入的是一个冰箱，那机器需要知道自己无法判断。</p>
+<h3 id="transfer-learning-domain-adversarial-learning">Transfer Learning (Domain Adversarial Learning)</h3>
+<p>一般的机器学习会分为训练集和测试集，而这两个数据集的相似度一般比较高，是一个类型的数据。例如训练黑白手写数字，测试集也是黑白手写数字，但是现实中测试集有可能是彩色的手写数字，这时原本的方法就不适用。</p>
+<h3 id="meta-learning">Meta Learning</h3>
+<p>机器学习是人类设计学习方法，机器具备学习的能力；而元学习则是机器具备学习如何学习的能力。</p>
+<h2 id="life-long-learning">Life-long Learning</h2>
+<p>终身学习，即可以不断地学习，学习新知识会结合旧的知识。</p>
 
     </div>
 
