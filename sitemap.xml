@@ -16,7 +16,7 @@
   </url>
   
   <url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>http://localhost:1313/post/</loc>
     <lastmod>2021-01-25T14:49:49+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -30,7 +30,7 @@
   </url>
   
   <url>
-    <loc>http://localhost:1313/posts/regression/</loc>
+    <loc>http://localhost:1313/post/regression/</loc>
     <lastmod>2021-01-25T14:49:49+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
