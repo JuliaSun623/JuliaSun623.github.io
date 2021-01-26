@@ -195,24 +195,24 @@
 <li>多次实验得到的的期望与靶心之间的bias，$E(f^*)$，可以理解为瞄准的位置和靶心的距离的偏差</li>
 <li>多次实验得到的的期望之间的variance，$Var(f^*)$，可以理解为多次打在靶上的点的集中程度</li>
 </ul>
-<p><img src="https://s3.ax1x.com/2021/01/26/sX2kXF.jpg" alt="img" style="zoom:50%;" /></p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sX2kXF.jpg" alt="img" style="zoom:40%;" /></p>
 <h3 id="f的bias和variance">$f^*$的bias和variance</h3>
 <p>做100次相同的实验，每次都取出10只宝可梦，并选择同一个model，最终会得到不同都$f^*$。把这100次实验找出来的100条的分布画出来</p>
 <h4 id="f的variance取决于model的复杂程度和data的数量">$f^*$的variance取决于model的复杂程度和data的数量</h4>
 <p>用比较简单的model的时候，variance是比较小的；反之，复杂的model使得variance很大(如果data足够多，那复杂的model也可以得到比较稳定的分布)。</p>
 <p>因为比较简单的model受到不同数据的影响比较小，比如$f(x)=c$，那么无论data是什么，模型是一样的，variance=0；而model复杂时，可选择的function很多，variance就很大。</p>
-<p><img src="https://s3.ax1x.com/2021/01/26/sXWql6.jpg" alt="img" style="zoom:50%;" /></p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sXWql6.jpg" alt="img" style="zoom:40%;" /></p>
 <h4 id="f的bias只取决于model的复杂程度">$f^*$的bias只取决于model的复杂程度</h4>
 <p>bias无论点散的多开，bias只取决于$f^*$的平均值与$\hat f$的差距。</p>
 <p>下图的蓝色线表示$f^*$的平均值，黑线表示理想函数$\hat f$，可以看到右边虽然variance比较大，但是bias是小的。因此，简单的model会有比较大的bias，但是比较复杂的model则有比较小的bias。</p>
-<p><img src="https://s3.ax1x.com/2021/01/26/sXfd91.jpg" alt="img" style="zoom:50%;" /></p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sXfd91.jpg" alt="img" style="zoom:40%;" /></p>
 <h2 id="bias-vs-variance">Bias vs. Variance</h2>
 <p><strong>比较简单的model，variance比较小，bias比较大，underfitting；而比较复杂的model，bias比较小，variance比较大，overfitting</strong>：</p>
 <ul>
 <li>如果是一个简单的model，它的function set的space是比较小的，这个范围可能根本就没有包含target；如果这个function set没有包含target，那么不管怎么sample，平均起来永远不可能是target(这里的space指上图中左下角那个被model圈起来的空间)</li>
 <li>如果这个model比较复杂，那么这个model所代表的function set的space是比较大的(简单的model实际上就是复杂model的子集)，那它就很有可能包含target，只是它没有办法找到那个target在哪，因为你给的training data不够，你给的training data每一次都不一样，所以他每一次找出来的$f^*$都不一样，但是如果他们是散布在这个target附近的，那平均起来，实际上就可以得到和target比较接近的位置(这里的space指上图中右下角那个被model圈起来的空间)</li>
 </ul>
-<p><img src="https://s3.ax1x.com/2021/01/26/sX5tAg.jpg" alt="img" style="zoom:50%;" /></p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sX5tAg.jpg" alt="img" style="zoom:40%;" /></p>
 <h3 id="判断biasvariance">判断bias/variance</h3>
 <ul>
 <li>当model不能fit训练集，则说明会有比较大的bias，即在training data上的error比较大。</li>
