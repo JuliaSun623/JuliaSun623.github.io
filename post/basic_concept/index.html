@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yu Sun" /><meta name="description" content="" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Yu Sun" /><meta name="description" content="回顾 上节课已知，越复杂的模型不一定性能越小，会有average error。而本节课可以看到error可以来自两个方面，一个是bias，一个是" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -40,23 +40,23 @@
 
 
 <meta property="og:title" content="Where does the error come from" />
-<meta property="og:description" content="" />
+<meta property="og:description" content="回顾 上节课已知，越复杂的模型不一定性能越小，会有average error。而本节课可以看到error可以来自两个方面，一个是bias，一个是" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/basic_concept/" />
 <meta property="article:published_time" content="2021-01-26T10:14:46+08:00" />
 <meta property="article:modified_time" content="2021-01-26T10:14:46+08:00" />
 <meta itemprop="name" content="Where does the error come from">
-<meta itemprop="description" content="">
+<meta itemprop="description" content="回顾 上节课已知，越复杂的模型不一定性能越小，会有average error。而本节课可以看到error可以来自两个方面，一个是bias，一个是">
 <meta itemprop="datePublished" content="2021-01-26T10:14:46+08:00" />
 <meta itemprop="dateModified" content="2021-01-26T10:14:46+08:00" />
-<meta itemprop="wordCount" content="0">
+<meta itemprop="wordCount" content="2969">
 
 
 
-<meta itemprop="keywords" content="机器学习,NLP," />
+<meta itemprop="keywords" content="机器学习,NLP,Bias/Variance," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Where does the error come from"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="回顾 上节课已知，越复杂的模型不一定性能越小，会有average error。而本节课可以看到error可以来自两个方面，一个是bias，一个是"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -147,11 +147,103 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#回顾">回顾</a></li>
+        <li><a href="#分布">分布</a>
+          <ul>
+            <li><a href="#抽样分布">抽样分布</a></li>
+            <li><a href="#回归regression问题">回归Regression问题</a></li>
+            <li><a href="#f的bias和variance">$f^*$的bias和variance</a></li>
+          </ul>
+        </li>
+        <li><a href="#bias-vs-variance">Bias vs. Variance</a>
+          <ul>
+            <li><a href="#判断biasvariance">判断bias/variance</a></li>
+            <li><a href="#处理biasvariance">处理bias/variance</a></li>
+          </ul>
+        </li>
+        <li><a href="#选择model">选择Model</a>
+          <ul>
+            <li><a href="#n-fold-cross-validation">N-fold Cross Validation</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
-      
+      <h2 id="回顾">回顾</h2>
+<p>上节课已知，越复杂的模型不一定性能越小，会有average error。而本节课可以看到error可以来自两个方面，一个是<strong>bias</strong>，一个是<strong>vairance</strong>。了解error的来源其实是很重要的，因为我们可以针对它挑选适当的方法来improve自己的model，提高model的准确率，而不会毫无头绪。</p>
+<h2 id="分布">分布</h2>
+<p>理论上最佳的function记为$\hat f$，我们要做的就是从训练集中学习到的最好的$f^<em>$，这里$f^</em>$是$\hat f$的估计值。形象的描述可以理解为，$\hat f$是靶的中心，而我们学习到的$f^*$是靶上任意一点，而这两点的差距就由bias+variance构成。</p>
+<h3 id="抽样分布">抽样分布</h3>
+<p>假设独立变量$x$表示的是每次独立地从训练集中学习到的$f^*$，则假设mean是$\mu$，variance是$\sigma ^2$。</p>
+<ul>
+<li>对$\mu$的估计：取样N个点，另$m=\frac{1}{N}\sum_nx^n$，对其求期望，则样本均值点期望$E[m]=\frac{1}{N}\sum_nE[x^n]=\mu$，样本均值点的方差$Var[m]=\frac{\sigma^2}{m}$。
+<strong>样本均值$m$以总体期望为中心对称分布，可以用来估测总体期望$\mu$</strong></li>
+<li>对$\sigma^2$对估计：取样N个点，另$s^2=\frac{1}{N-1}\sum_{i=1}^N(x^i-m)^2$，则样本方差的期望$E[s^2]=\sigma^2$，样本方差的方差$Var(s^2)=\frac{2\sigma^4}{N-1}$
+**样本方差$s^2$以总体方差为中心对称分布，可以用来估测总体方差$\sigma^2$**</li>
+</ul>
+<h3 id="回归regression问题">回归Regression问题</h3>
+<p>我们要估测的是靶的中心$\hat f$，每次训练数据训练出来的是打在靶上的某个点$f^*$，产生的error取决于：</p>
+<ul>
+<li>多次实验得到的的期望与靶心之间的bias，$E(f^*)$，可以理解为瞄准的位置和靶心的距离的偏差</li>
+<li>多次实验得到的的期望之间的variance，$Var(f^*)$，可以理解为多次打在靶上的点的集中程度</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/01/26/sX2kXF.jpg" alt="img" style="zoom:50%;" /></p>
+<h3 id="f的bias和variance">$f^*$的bias和variance</h3>
+<p>做100次相同的实验，每次都取出10只宝可梦，并选择同一个model，最终会得到不同都$f^*$。把这100次实验找出来的100条的分布画出来</p>
+<h4 id="f的variance取决于model的复杂程度和data的数量">$f^*$的variance取决于model的复杂程度和data的数量</h4>
+<p>用比较简单的model的时候，variance是比较小的；反之，复杂的model使得variance很大(如果data足够多，那复杂的model也可以得到比较稳定的分布)。</p>
+<p>因为比较简单的model受到不同数据的影响比较小，比如$f(x)=c$，那么无论data是什么，模型是一样的，variance=0；而model复杂时，可选择的function很多，variance就很大。</p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sXWql6.jpg" alt="img" style="zoom:50%;" /></p>
+<h4 id="f的bias只取决于model的复杂程度">$f^*$的bias只取决于model的复杂程度</h4>
+<p>bias无论点散的多开，bias只取决于$f^*$的平均值与$\hat f$的差距。</p>
+<p>下图的蓝色线表示$f^*$的平均值，黑线表示理想函数$\hat f$，可以看到右边虽然variance比较大，但是bias是小的。因此，简单的model会有比较大的bias，但是比较复杂的model则有比较小的bias。</p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sXfd91.jpg" alt="img" style="zoom:50%;" /></p>
+<h2 id="bias-vs-variance">Bias vs. Variance</h2>
+<p><strong>比较简单的model，variance比较小，bias比较大，underfitting；而比较复杂的model，bias比较小，variance比较大，overfitting</strong>：</p>
+<ul>
+<li>如果是一个简单的model，它的function set的space是比较小的，这个范围可能根本就没有包含target；如果这个function set没有包含target，那么不管怎么sample，平均起来永远不可能是target(这里的space指上图中左下角那个被model圈起来的空间)</li>
+<li>如果这个model比较复杂，那么这个model所代表的function set的space是比较大的(简单的model实际上就是复杂model的子集)，那它就很有可能包含target，只是它没有办法找到那个target在哪，因为你给的training data不够，你给的training data每一次都不一样，所以他每一次找出来的$f^*$都不一样，但是如果他们是散布在这个target附近的，那平均起来，实际上就可以得到和target比较接近的位置(这里的space指上图中右下角那个被model圈起来的空间)</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/01/26/sX5tAg.jpg" alt="img" style="zoom:50%;" /></p>
+<h3 id="判断biasvariance">判断bias/variance</h3>
+<ul>
+<li>当model不能fit训练集，则说明会有比较大的bias，即在training data上的error比较大。</li>
+<li>当可以fit训练集，但是在testing data上的error很大，则说明variance比较大。</li>
+</ul>
+<h3 id="处理biasvariance">处理bias/variance</h3>
+<ul>
+<li>bias：重新设计model，因为target可能不包含在model里。
+<ul>
+<li>增加更多的feature</li>
+<li>设计更复杂的model</li>
+</ul>
+</li>
+<li>variance：
+<ul>
+<li>增加更多的数据。这个方法很有效，不会对bias有影响，但是不是总是practical，因为实际上很难收集更多的办法。</li>
+<li>Regularization。要求曲线变平滑。这种方法可能会对bias有影响，因为可能会去掉target，所以当你做regularization的时候，需要调整regularization的weight，在variance和bias之间取得平衡。</li>
+</ul>
+</li>
+</ul>
+<h2 id="选择model">选择Model</h2>
+<p>我们有很多个model可以选择，还有很多参数可以调，比如regularization的weight。通常希望找一个model，它variance够小，bias也够小，这两个合起来得到最小的testing data的error。</p>
+<p><strong>⚠️ 不可以这样做：</strong></p>
+<p>有training set和testing set，接下来想知道model1、model2、model3里面，应该选哪一个model，然后你就分别用这三个model去训练出，然后把它apply到testing set上面，分别得到三个error为0.9，0.7，0.5，这里很直觉地会认为是model3最好。</p>
+<p>但是testing set应该是手上没有的，自己的testing data跟实际的testing data会有一定的偏差存在，今天那这个testing set来选择最好的model的时候，它在真正的testing set上不见得是最好的model，通常是比较差的。</p>
+<p><strong>✔️ 实际应该做的：</strong></p>
+<p>把training set分成training set和validation set，前者是真正用来训练的，后者是用来选择model的。</p>
+<h3 id="n-fold-cross-validation">N-fold Cross Validation</h3>
+<p>如果你不相信某一次分train和validation的结果的话，那就分很多种不同的样子。</p>
+<p>比如说，如果做3-flod的validation，就是把training set分成三份，每次拿其中一份当做validation set，另外两份当training；分别在每个情境下都计算一下3个model的error，然后计算一下它的average error；最后选择average error最好的那个model；接下来把用整个完整的training data重新训练一遍model1的参数；然后再去testing data上test。</p>
+
     </div>
 
     <div class="post-copyright">
@@ -173,6 +265,7 @@
       <div class="post-tags">
           <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
           <a href="/tags/nlp/">NLP</a>
+          <a href="/tags/bias/variance/">Bias/Variance</a>
           </div>
       <nav class="post-nav">
         
