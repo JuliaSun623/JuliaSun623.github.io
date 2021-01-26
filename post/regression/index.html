@@ -49,7 +49,7 @@
 <meta itemprop="description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝">
 <meta itemprop="datePublished" content="2021-01-25T14:49:49+08:00" />
 <meta itemprop="dateModified" content="2021-01-25T14:49:49+08:00" />
-<meta itemprop="wordCount" content="892">
+<meta itemprop="wordCount" content="976">
 
 
 
@@ -168,7 +168,7 @@
     <div class="post-content">
       <p>预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。</p>
 <h2 id="设定参数">设定参数</h2>
-<img src='https://s3.ax1x.com/2021/01/25/sL7ECj.jpg' style="zoom:67%;">
+<img src='https://s3.ax1x.com/2021/01/25/sL7ECj.jpg' style="zoom:50%;">
 <ul>
 <li>
 <p>输入$x$：一只宝可梦，用下标表示其属性
@@ -195,7 +195,7 @@ $$</p>
 <li>$w$：weight</li>
 <li>$b$：bias</li>
 </ul>
-<img src='https://s3.ax1x.com/2021/01/25/sOpsJ0.jpg' style="zoom:67%;">
+<img src='https://s3.ax1x.com/2021/01/25/sOpsJ0.jpg' style="zoom:50%;">
 <h3 id="2-定义如何判断为好的function">2. 定义如何判断为好的function</h3>
 <p>设定参数：</p>
 <ul>
@@ -204,20 +204,21 @@ $$</p>
 <li>$\hat y^i$：$\hat y$表示输出$y$的完整个体（由于regression的输出值是标量，其中并没有component，只是一个简单的数值；但是未来如果考虑structured Learning的时候，输出的object可能是有structured的，所以还是需要用上标下标来表示一个完整的output的object和它包含的component）</li>
 </ul>
 <h4 id="loss-function-l">Loss function $L$</h4>
-<p><strong>loss function是函数的函数</strong>：输入是一个函数，输出是这个函数有多差。因此$L$越大，输入的函数表现越差
+<p>==loss function是函数的函数==：输入是一个函数，输出是这个函数有多差。因此$L$越大，输入的函数表现越差
 $$
 L(f)=L(w,b)=\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
 $$
 最后一个公式可以自己定义，主要是来评估输出$y$和输入函数的差异。</p>
-<img src='https://s3.ax1x.com/2021/01/25/sOC526.jpg' style="zoom:67%;">
+<img src='https://s3.ax1x.com/2021/01/25/sOC526.jpg' style="zoom:50%;">
 <h3 id="3-选择最好的function">3. 选择最好的function</h3>
-<p>要function表现好，就要使得损失函数最小：$f^<em>=arg\ min_fL(f)$，即：
+<p>要function表现好，就要使得损失函数最小：$f^<em>=arg\ min_fL(f)$ ，即：
 $$
 w^</em>,b^*=arg\ min_{w,b}L(w,b)=arg\ min_{w,b}\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
 $$
 这里用到的就是Gradient Descent（梯度下降）。</p>
-<img src='https://s3.ax1x.com/2021/01/25/sOPHS0.jpg' style="zoom:67%;">
+<img src='https://s3.ax1x.com/2021/01/25/sOPHS0.jpg' style="zoom:50%;">
 <h4 id="gradient-descent">Gradient Descent</h4>
+<p>有些损失函数用线性代数的知识就可以解；但是gradient descent适用于更普遍的问题，即==只要是可微分的，gradient descent都可以处理==，找到表现比较好的参数。</p>
 
     </div>
 
