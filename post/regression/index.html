@@ -49,7 +49,7 @@
 <meta itemprop="description" content="预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝">
 <meta itemprop="datePublished" content="2021-01-25T14:49:49+08:00" />
 <meta itemprop="dateModified" content="2021-01-25T14:49:49+08:00" />
-<meta itemprop="wordCount" content="976">
+<meta itemprop="wordCount" content="3350">
 
 
 
@@ -159,6 +159,14 @@
             <li><a href="#3-选择最好的function">3. 选择最好的function</a></li>
           </ul>
         </li>
+        <li><a href="#应用于宝可梦问题">应用于宝可梦问题</a>
+          <ul>
+            <li><a href="#偏微分计算">偏微分计算</a></li>
+            <li><a href="#结果">结果</a></li>
+            <li><a href="#优化">优化</a></li>
+            <li><a href="#引入更多参数">引入更多参数</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -204,21 +212,91 @@ $$</p>
 <li>$\hat y^i$：$\hat y$表示输出$y$的完整个体（由于regression的输出值是标量，其中并没有component，只是一个简单的数值；但是未来如果考虑structured Learning的时候，输出的object可能是有structured的，所以还是需要用上标下标来表示一个完整的output的object和它包含的component）</li>
 </ul>
 <h4 id="loss-function-l">Loss function $L$</h4>
-<p>==loss function是函数的函数==：输入是一个函数，输出是这个函数有多差。因此$L$越大，输入的函数表现越差
+<p><strong>loss function是函数的函数</strong>：输入是一个函数，输出是这个函数有多差。因此$L$越大，输入的函数表现越差
 $$
 L(f)=L(w,b)=\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
 $$
 最后一个公式可以自己定义，主要是来评估输出$y$和输入函数的差异。</p>
 <img src='https://s3.ax1x.com/2021/01/25/sOC526.jpg' style="zoom:50%;">
 <h3 id="3-选择最好的function">3. 选择最好的function</h3>
-<p>要function表现好，就要使得损失函数最小：$f^<em>=arg\ min_fL(f)$ ，即：
+<p>要function表现好，就要使得损失函数最小：$f^<em>=arg\ min_fL(f)$，即：
 $$
 w^</em>,b^*=arg\ min_{w,b}L(w,b)=arg\ min_{w,b}\sum_{n=1}^{10}(\hat y^n-(b+w·x_{cp}^n))^2
 $$
 这里用到的就是Gradient Descent（梯度下降）。</p>
 <img src='https://s3.ax1x.com/2021/01/25/sOPHS0.jpg' style="zoom:50%;">
 <h4 id="gradient-descent">Gradient Descent</h4>
-<p>有些损失函数用线性代数的知识就可以解；但是gradient descent适用于更普遍的问题，即==只要是可微分的，gradient descent都可以处理==，找到表现比较好的参数。</p>
+<p>有些损失函数用线性代数的知识就可以解；但是gradient descent适用于更普遍的问题，即<strong>只要是可微分的，gradient descent都可以处理</strong>，找到表现比较好的参数。</p>
+<h5 id="单个参数问题">单个参数问题</h5>
+<p>先从只有一个参数$w$的情况看，即要实现$w^*=arg\ min_wL(w)$。有一个暴力的方法是，穷举所有的$w$值，去找到使loss function值最小的，但是这样做是没有效率的。gradient descent就是用来解决这个效率问题的：</p>
+<ol>
+<li>（随机）选取一个初始点$w^0$。</li>
+<li>计算$\frac{dL}{dw}|_{w=w_i}$，即$w$在$w_i$处的梯度，即该点的切线斜率，$w$应该往loss减少的方向走：
+<ul>
+<li>如果梯度为负，则应该增加$w$</li>
+<li>如果梯度为正，则应该减少$w$</li>
+</ul>
+</li>
+<li>迭代每次$w$增加/减少的步长：$w^{i+1}\leftarrow w^i-\eta\frac{dL}{dw}|_{w=w^i}$
+<ul>
+<li>现在的微分值：微分值的绝对值越大，说明越陡峭，则步长就越大</li>
+<li>学习率$\eta$：$\eta$越大，每次更新的幅度就越大，学习的速度也越快。（但是learning rate如果太大，可能就会跳过最合适的global minima的点）</li>
+<li>负号：保证梯度为负权重增加，梯度为负权重见效。</li>
+</ul>
+</li>
+<li>重复执行2和3，会到达一个local minima的点，即微分为0，但是无法找到global minima。但是这个问题不会影响regression，因为这个问题没有local minima。</li>
+</ol>
+<img src='https://s3.ax1x.com/2021/01/26/sOXOHI.jpg' style="zoom:50%;">
+<h5 id="两个参数问题">两个参数问题</h5>
+<p>本次的宝可梦预测为两个参数问题，即$w^<em>,b^</em>=arg\ min_{w,b}L(w,b)$，可以从单个参数推广到两个参数：</p>
+<ol>
+<li>（随机）初始化$w^0,b^0$</li>
+<li>计算$\frac{\partial L}{\partial w}|<em>{w=w^i,b=b^i},\frac{\partial L}{\partial b}|</em>{w=w^i,b=b^i}$</li>
+<li>迭代每次$w,b$的增加/减少步长$w^{i+1}\leftarrow w^i-\eta\frac{\partial L}{\partial w}|<em>{w=w^i,b=b^i},b^{i+1}\leftarrow b^i-\eta\frac{\partial L}{\partial b}|</em>{w=w^i,b=b^i}$</li>
+<li>重复执行2和3，会到达一个local minima的点</li>
+</ol>
+<p>⚠️ Gradient Descent中的Gradient就是$\nabla L=[\frac{\partial L}{\partial w},\frac{\partial L}{\partial b}]^T$。</p>
+<p>可视化效果如下：(三维坐标显示在二维图像中，loss的值用颜色来表示)。其中横坐标是b，纵坐标是w，颜色代表loss的值，越偏蓝色表示loss越小，越偏红色表示loss越大</p>
+<img src='https://s3.ax1x.com/2021/01/26/sOjSC8.jpg' style="zoom:50%;">
+<p><strong>每次计算得到的梯度Gradient，就是该等高线的法线方向（图中红色箭头的方向）。梯度下降的作用就是让原先$(w,b)$的朝着Gradient的方向即等高线法线方向前进，其中learning rate的作用是每次更新的跨度（对应图中红色箭头的长度）。经过多次迭代，最终Gradient达到极小值点（local minima）。</strong></p>
+<p>梯度下降的结果会受到初始化点的影响，但是在Linear Regression的方式是**convex（没有local minima）**的。</p>
+<h2 id="应用于宝可梦问题">应用于宝可梦问题</h2>
+<h3 id="偏微分计算">偏微分计算</h3>
+<p>宝可梦问题只有两个参数，并且损失函数已知，因此偏微分的公式为：</p>
+<img src='https://s3.ax1x.com/2021/01/26/sOvMJf.jpg' style="zoom:30%;">
+<h3 id="结果">结果</h3>
+<p>根据gradient descent，我们得到的中最好的参数是$b=-188.4, w=2.7$。</p>
+<p>而我们真正关心的是generalization的case，也就是用这个model去估测新抓到的宝可梦误差会有多少，即testing data的误差。于是又抓了10只新的宝可梦（于训练集中不同），算出来的Average Error on Testing Data为$\sum_{n=1}^{10}e^n=35.0$，比training data里得到的误差31.9要大。</p>
+<h3 id="优化">优化</h3>
+<p>要想更好地拟合训练集中的点，就需要重新去设计model。</p>
+<p>实际上，从结果来看，最终的function可能不是一条直线，可能是稍微更复杂一点的曲线</p>
+<h4 id="x_cp2的model">$(x_{cp})^2$的model</h4>
+<img src='https://s3.ax1x.com/2021/01/26/sOvLkt.jpg' style="zoom:50%;">
+<h4 id="x_cp3的model">$(x_{cp})^3$的model</h4>
+<img src='https://s3.ax1x.com/2021/01/26/sOvx1S.jpg' style="zoom:50%;">
+<h4 id="x_cp4的model">$(x_{cp})^4$的model</h4>
+<img src='https://s3.ax1x.com/2021/01/26/sOxC0s.jpg' style="zoom:50%;">
+<h4 id="x_cp5的model">$(x_{cp})^5$的model</h4>
+<img src='https://s3.ax1x.com/2021/01/26/sOxZ1U.jpg' style="zoom:50%;">
+<h4 id="五个model的对比">五个model的对比</h4>
+<p>随着模型越复杂，training data的average error越小，因为复杂的模型是会包含更多的function，所以更有可能找到那个让average error越小的function。但是在testing data的结果不一定，超过一定复杂程度会发生overfitting现象。</p>
+<img src='https://s3.ax1x.com/2021/01/26/sOxHvF.jpg' style="zoom:50%;">
+<h3 id="引入更多参数">引入更多参数</h3>
+<p>影响进化后cp值的除了进化前的cp值，还有物种$x_s$的影响，因此需要重新回归算法</p>
+<h4 id="1-确定model">1. 确定model</h4>
+<img src='https://s3.ax1x.com/2021/01/26/sXS8yD.jpg' style="zoom:30%;">
+<p>也就是根据不同的物种，设计不同的linear model，那如何将上面的四个if语句合并成一个linear model呢？这里引入了$\delta$(条件表达式)的概念，当表达式为真，则$\delta$为1；否则为0。因此可以通过如下方式将4个if语句合并为一个linear model：</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/new-model.png/" alt="img" style="zoom:50%;" /></p>
+<p>下面就是不同物种的宝可梦的训练集和测试集上的结果：</p>
+<p><img src="https://s3.ax1x.com/2021/01/26/sXpC0H.jpg" alt="img" style="zoom:50%;" /></p>
+<h4 id="2-定义判断好的function">2. 定义判断好的function</h4>
+<p>上面如果我们引入了很多的属性，则有可能会产生overfitting。在这一步，我们可以增加一个regulaization项来解决。</p>
+<p>原来的loss function只考虑了prediction的error，而regularization则是在原来的loss function的基础上加上了一项$\lambda\sum(w_i)^2$，其中$i$代表遍历n个training data。
+$$
+L=\sum_n(\hat y^n-(b+\sum w_ix_i))^2+\lambda\sum(w_i)^2
+$$
+要使得整个loss function值小，则应该选择$w$参数值接近0的function，这些是比较平滑的，即当输入有变化的时候，output对输入的变化是比较不敏感的。<strong>bias的大小跟function的平滑程度是没有关系的</strong>，bias值的大小只是把function上下移动而已。</p>
+<p>其中$\lambda$越大，找到的函数越平滑，越倾向于考虑$w$本来的值，所以越少考虑training data上的error，因此training data上的error会逐渐变大；但是testing data上不一定。<strong>我们喜欢比较平滑的function，因为它对noise不那么sensitive；但是我们又不喜欢太平滑的function，因为它就失去了对data拟合的能力；而function的平滑程度，就需要通过调整$λ$来决定。</strong></p>
 
     </div>
 
