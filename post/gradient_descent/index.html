@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Gradient Descent - Yu Sun</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yu Sun" /><meta name="description" content="在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\t" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/gradient_descent/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Gradient Descent" />
+<meta property="og:description" content="在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\t" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/gradient_descent/" />
+<meta property="article:published_time" content="2021-01-26T15:01:46+08:00" />
+<meta property="article:modified_time" content="2021-01-26T15:01:46+08:00" />
+<meta itemprop="name" content="Gradient Descent">
+<meta itemprop="description" content="在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\t">
+<meta itemprop="datePublished" content="2021-01-26T15:01:46+08:00" />
+<meta itemprop="dateModified" content="2021-01-26T15:01:46+08:00" />
+<meta itemprop="wordCount" content="2939">
+
+
+
+<meta itemprop="keywords" content="机器学习,NLP,梯度下降," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gradient Descent"/>
+<meta name="twitter:description" content="在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\t"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Gradient Descent</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%9D%8E%E5%AE%8F%E6%AF%85/"> 机器学习李宏毅 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#调整learning-rate">调整Learning rate</a>
+          <ul>
+            <li><a href="#adaptive-learning-rate">Adaptive Learning rate</a></li>
+            <li><a href="#adagrad">Adagrad</a></li>
+          </ul>
+        </li>
+        <li><a href="#stochastic-gradicent-descent随机梯度下降">Stochastic Gradicent Descent（随机梯度下降）</a></li>
+        <li><a href="#feature-scaling特征缩放">Feature Scaling（特征缩放）</a>
+          <ul>
+            <li><a href="#原理解释">原理解释</a></li>
+            <li><a href="#如何做feature-scaling">如何做feature scaling</a></li>
+          </ul>
+        </li>
+        <li><a href="#gradient-descent限制">Gradient Descent限制</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\theta$是参数。用下面步骤计算梯度并更新参数：</p>
+<img src='https://s3.ax1x.com/2021/01/26/sjuhRO.jpg' style="zoom:30%;">
+<p>下图是将gradient descent在投影到二维坐标系中可视化的样子，图上的每一个点都是$(\theta_1,\theta_2,loss)$在该平面的投影，其中红色箭头为梯度，梯度方向就是箭头方向，梯度大小即箭头长度；蓝色箭头为更新过程，每次更新loss会沿着蓝色箭头方向减小。</p>
+<img src='https://s3.ax1x.com/2021/01/26/sjKMwR.jpg' style="zoom:40%;">
+<p><strong>梯度不一定是递减的，但是沿着梯度下降的方向，函数值loss一定是递减的</strong>，且当gradient=0时，loss下降到了局部最小值。</p>
+<h2 id="调整learning-rate">调整Learning rate</h2>
+<p>Learning rate的大小会对训练过程造成影响：</p>
+<ul>
+<li>如果learning rate刚刚好，就可以像下图中红色线段一样顺利地到达到loss的最小值</li>
+<li>如果learning rate太小的话，像下图中的蓝色线段，虽然最后能够走到local minimal的地方，但是它可能会下降地很慢</li>
+<li>如果learning rate太大，像下图中的绿色线段，它的步伐太大了，它永远没有办法走到特别低的地方，可能永远在这个“山谷”的口上振荡而无法走下去</li>
+<li>如果learning rate非常大，像下图中的黄色线段，结果会造成update参数以后，loss反而会越来越大</li>
+</ul>
+<img src='https://s3.ax1x.com/2021/01/26/sjMVAI.jpg' style="zoom:40%;">
+<p>在训练的时候需要画一下右边的图，需要确定loss随着parameter的迭代稳定减少。</p>
+<h3 id="adaptive-learning-rate">Adaptive Learning rate</h3>
+<p>简单的流行的方法：<strong>随着epoch的增加，减少learning rate</strong>。</p>
+<p>因为在起始点的时候，通常离目的地很远，所以需要较大的learning rate来加快下降的速度；当经过了几个epochs时，接近了目的地，所以应该减小learning rate，让它能够收敛在最低点的地方。例如，第t次，$\eta^t=\eta/\sqrt{t+1}$</p>
+<p>最好的方法是，每个参数给定不同的learning rate：Adagrad。</p>
+<h3 id="adagrad">Adagrad</h3>
+<blockquote>
+<p>每个参数的learning rate都除以之前算出的微分值的方均根。</p>
+</blockquote>
+<p>Adagrad就是将不同参数的learning rate分开考虑的一种算法。</p>
+<ul>
+<li>Vanilla Gradient Descent（普通的梯度下降）：$w^{t+1}\leftarrow w^t-\eta^tg^t$</li>
+<li>Adagrad：$w^{t+1}\leftarrow w^t-\frac{\eta^t}{\sigma^t}g^t$</li>
+</ul>
+<p>其中$\eta^t=\frac{\eta}{\sqrt{t+1}}$，$g^t=\frac{\partial L(\theta^t)}{\partial w}$。$w$是function中的某个参数；$t$表示第t次update；$g^t$表示Loss对$w$的偏微分；$\sigma^t$是之前所有Loss对w偏微分的方均根（根号下的平方均值），这个值对每一个参数来说都是不一样的。</p>
+<img src='https://s3.ax1x.com/2021/01/27/svhRIg.jpg' style="zoom:40%;">
+<p>由于$\eta^t$和$\sigma^t$中都有$1/\sqrt{t+1}$，可以消除，所以最后Adagrad可以简化为$w^{t+1}\leftarrow w^t-\frac{\eta}{\sqrt{\sum_{i=0}^t(g^i)^2}}g^t$</p>
+<h4 id="contradiction解释">Contradiction解释</h4>
+<p>**contradiction：**在普通的Gradient Descent中，gradient越大，步长越大；但是Adagrad中，$g^t$使得gradient越大，步长越大，但是分母部分gradient越大，步长越小。</p>
+<p>**直观解释：**Adagrad要考虑的是，这个gradient有多surprise，即反差有多大。如果某次gradient比之前大/小很多，则会产生比较大的反差，分母部分就是为了造成反差效果。</p>
+<p><strong>正规解释：</strong></p>
+<p>gradient越大，离最低点越远这件事情在有多个参数的情况下是不一定成立的。比如下图，$w_1$和$w_2$是loss function的两个参数，loss的值投影到该平面中以颜色深度表示大小。分别在$w1$和$w2$处垂直切一刀，对应的情况为右边的两条曲线。可以看出，比起a点，c点距离最低点更近，但是它的gradient却越大。</p>
+<img src='https://s3.ax1x.com/2021/01/27/sv59pj.jpg' style="zoom:40%;">
+<p>其实最好的步长不仅与一阶导数（Gradient）有关，还和二阶导数有关。</p>
+<p>回到Adagrad表达式，$w^{t+1}\leftarrow w^t-\frac{\eta}{\sqrt{\sum_{i=0}^t(g^i)^2}}g^t$。$g^t$就是一阶微分，分母可以代表二阶微分。所以Adagrad想要做的事情就是，在不增加任何额外运算的前提下，想办法去估测二次微分的值。</p>
+<h2 id="stochastic-gradicent-descent随机梯度下降">Stochastic Gradicent Descent（随机梯度下降）</h2>
+<p>随机梯度下降可以让训练更快。</p>
+<p>回顾Regression的loss function $L=\sum_n(\hat y^n-(b+\sum w_ix_i^n))^2$，考虑了所有的training example。但是SGD每次只选择一个example $x^n$，计算loss为$L^n=(\hat y^n-(b+\sum w_ix_i^n))^2$，在梯度下降时也只利用第n个loss进行更新。</p>
+<p>stochastic gradient descent与传统gradient descent的效果对比如下：</p>
+<img src='https://s3.ax1x.com/2021/01/27/svIDz9.jpg' style="zoom:40%;">
+<p>SGD一步的方向不一定是一致的，但是SGD快，可以走很多步。</p>
+<h2 id="feature-scaling特征缩放">Feature Scaling（特征缩放）</h2>
+<blockquote>
+<p>特征缩放：当多个特征的分布范围很不一样时，最好将这些不同feature的范围缩放成一样</p>
+</blockquote>
+<h3 id="原理解释">原理解释</h3>
+<p>假设$x_1$的值都是很小的，$x_2$的值都是很大的，此时画出loss的error surface，如果对$w_1$和$w_2$都做一个同样的变动，那么$w_1$的变化对$y$的影响是比较小的，而$w_2$的变化对$y$的影响是比较大的。如下图左，在$w_1$方向上变化比较慢，所以比较平滑；反之$w_2$比较sharp。而有图就是两者值的范围类似。</p>
+<img src='https://s3.ax1x.com/2021/01/27/svIvWQ.jpg' style="zoom:40%;">
+<p>对于左图长椭圆形的error surface，如果不使用Adagrad之类的方法，是很难搞定它的。因为在像$w_1$和$w_2$这样不同的参数方向上，会需要不同的learning rate，用相同的learning rate很难达到最低点。如果有scale的话，loss在参数$w_1,w_2$平面上的投影就是一个正圆形，update参数会比较容易。</p>
+<p>而且左图的gradient descent的每次update并不都是向着最低点走的，而是顺着等高线的方向；但是当经过对input的scale使loss的投影是一个正圆的话，不管在这个区域的哪一个点，它都会向着圆心走。因此feature scaling对参数update的效率是有帮助的。</p>
+<h3 id="如何做feature-scaling">如何做feature scaling</h3>
+<p>对每个dimension i，计算平均值$m_i$和标准差$\sigma_i$，然后对第r个example的第i个component，$x_i^r\leftarrow \frac{x_i^r-m_i}{\sigma_i}$。</p>
+<p>实际上就是将每一个参数都归一化成标准正态分布。</p>
+<p>⚠️ update参数之后，loss不一定会下降（Learning rate太大了）。</p>
+<h2 id="gradient-descent限制">Gradient Descent限制</h2>
+<p>Gradient Descent一个主要限制是会卡在local minima的地方。事实上还有一个问题是，微分值是0的地方并不是只有local minima，settle point的微分值也是0。以上都是理论上的探讨，到了实践的时候，其实当gradient的值接近于0的时候，我们就已经把它停下来了，但是微分值很小，不见得就是很接近local minima，也有可能像下图一样在一个高原的地方。</p>
+<img src='https://s3.ax1x.com/2021/01/27/svTt4U.jpg' style="zoom:40%;">
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yu Sun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+          <a href="/tags/nlp/">NLP</a>
+          <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">梯度下降</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/basic_concept/">
+            <span class="next-text nav-default">Where does the error come from</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:cnsdytsy@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/15074966/ysun" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://github.com/JuliaSun623" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.instagram.com/chubbyfishfish/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>olOwOlo</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

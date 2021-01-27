@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>梯度下降 on Yu Sun</title>
+    <link>http://localhost:1313/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</link>
+    <description>Recent content in 梯度下降 on Yu Sun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 26 Jan 2021 15:01:46 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gradient Descent</title>
+      <link>http://localhost:1313/post/gradient_descent/</link>
+      <pubDate>Tue, 26 Jan 2021 15:01:46 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/gradient_descent/</guid>
+      <description>在之前Regression的step 3中，需要解决下面问题：$\theta^*=arg\ min_\theta L(\theta)$，其中$L$是损失函数，$\t</description>
+    </item>
+    
+  </channel>
+</rss>
