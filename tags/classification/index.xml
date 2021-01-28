@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Classification on Yu Sun</title>
+    <link>http://localhost:1313/tags/classification/</link>
+    <description>Recent content in Classification on Yu Sun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 27 Jan 2021 10:32:36 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/classification/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Classification: Probabilistic Generative Model</title>
+      <link>http://localhost:1313/post/classification/</link>
+      <pubDate>Wed, 27 Jan 2021 10:32:36 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/classification/</guid>
+      <description>概念 任务：找一个function，它的input是一个object，它的输出是这个object属于哪一个class。 依旧用宝可梦的例子：宝可</description>
+    </item>
+    
+  </channel>
+</rss>
