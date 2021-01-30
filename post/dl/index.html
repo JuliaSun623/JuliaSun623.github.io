@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Deep Learning - Yu Sun</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yu Sun" /><meta name="description" content="深度学习历史 1958：Perceptron(linear model)，提出感知机 和Logistic Regression类似，只是少了sigm" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/dl/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Deep Learning" />
+<meta property="og:description" content="深度学习历史 1958：Perceptron(linear model)，提出感知机 和Logistic Regression类似，只是少了sigm" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/dl/" />
+<meta property="article:published_time" content="2021-01-30T13:51:49+08:00" />
+<meta property="article:modified_time" content="2021-01-30T13:51:49+08:00" />
+<meta itemprop="name" content="Deep Learning">
+<meta itemprop="description" content="深度学习历史 1958：Perceptron(linear model)，提出感知机 和Logistic Regression类似，只是少了sigm">
+<meta itemprop="datePublished" content="2021-01-30T13:51:49+08:00" />
+<meta itemprop="dateModified" content="2021-01-30T13:51:49+08:00" />
+<meta itemprop="wordCount" content="5307">
+
+
+
+<meta itemprop="keywords" content="机器学习,NLP,深度学习," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Deep Learning"/>
+<meta name="twitter:description" content="深度学习历史 1958：Perceptron(linear model)，提出感知机 和Logistic Regression类似，只是少了sigm"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Deep Learning</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-30 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%9D%8E%E5%AE%8F%E6%AF%85/"> 机器学习李宏毅 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#深度学习历史">深度学习历史</a></li>
+        <li><a href="#neural-network">Neural Network</a>
+          <ul>
+            <li><a href="#fully-connect-feedforward-network全连接前馈网络">Fully Connect Feedforward Network（全连接前馈网络）</a></li>
+            <li><a href="#matrix-operation矩阵运算">Matrix Operation（矩阵运算）</a></li>
+            <li><a href="#output-layer">Output Layer</a></li>
+          </ul>
+        </li>
+        <li><a href="#实例示范">实例示范</a>
+          <ul>
+            <li><a href="#问题描述手写数字识别">问题描述——手写数字识别</a></li>
+            <li><a href="#dnn三步走">DNN三步走</a></li>
+          </ul>
+        </li>
+        <li><a href="#为什么需要deep-learning">为什么需要Deep Learning</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="深度学习历史">深度学习历史</h2>
+<ul>
+<li>1958：Perceptron(linear model)，提出感知机
+<ul>
+<li>和Logistic Regression类似，只是少了sigmoid部分</li>
+</ul>
+</li>
+<li>1969：Perceptron has limitation，from MIT</li>
+<li>1980s：Multi-layer perceptron，多层感知机
+<ul>
+<li>和当前的DNN没有本质上的区别</li>
+</ul>
+</li>
+<li>1986：Backpropagation（Hinton提出的）
+<ul>
+<li>通常超过3层隐藏层就不会有好的结果</li>
+</ul>
+</li>
+<li>1989：1个隐藏层足够好了，没必要很深</li>
+<li>2006：RBM (Restricted Boltzmann Machine)，受限玻尔兹曼机 initialization
+<ul>
+<li>Deep learning和Multi-layer Perceptron的不同：做gradient descent的时候选取初始值的方法如果是用RBM，那就是Deep learning；如果没有用RBM，就是传统的Multi-layer Perceptron。</li>
+<li>实际上，RBM用的不是neural network base的方法，而是graphical model，后来大家试验得多了发现RBM并没有什么太大的帮助，因此现在基本上没有人使用RBM做initialization了。</li>
+<li>RBM最大的贡献是，它让大家重新对Deep learning这个model有了兴趣</li>
+</ul>
+</li>
+<li>2009：开始使用GPU加速</li>
+<li>2011：开始在语音识别中受欢迎</li>
+<li>2012：win ILSVRC image competition，深度学习在图像领域也开始流行起来</li>
+</ul>
+<p>实际上，深度学习也是像机器学习一样的三步：</p>
+<ol>
+<li>确定model（function set）</li>
+<li>定义如何判断为好的function</li>
+<li>选择最好的function</li>
+</ol>
+<h2 id="neural-network">Neural Network</h2>
+<p>把logistic regression拼接在一起，其中一个logistic regression当作“Neuron”，整个称之为Neural Network。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/neural-network.png/" alt="img" style="zoom:0%;" /></p>
+<p>用不同的方法连接这些neuron，可以得到不同的structure。Neural Network里的每一个Logistic Regression都有自己的weight和bias，这些weight和bias集合起来，就是这个network的parameter $\theta$。</p>
+<p>全连接前馈网络是最常见的neuron连接方式。</p>
+<h3 id="fully-connect-feedforward-network全连接前馈网络">Fully Connect Feedforward Network（全连接前馈网络）</h3>
+<p>将neuron分成几组，如下图有三组，每个neuron都有一组weight和bias（根据feature找出来的）。假设这个neural network的参数weight和bias已知的话，它就是一个function，它的input是一个vector，output是另一个vector，这个vector里面放的是样本点的feature，vector的dimension就是feature的个数。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/fully-connect-feedback-network.png/" alt="img" style="zoom:40%;" /></p>
+<p>如果还不知道参数，只是定出了这个network的structure，即只决定了这些neuron该怎么连接在一起，这样的一个network structure其实是define了一个function set(model)。之后给这个network设不同的参数，它就变成了不同的function，把这些可能的function集合起来，我们就得到了一个function set。</p>
+<p>和机器学习是类似的，只是换个方式决定function set，只不过用neural network决定function set的时候，这个function set是比较大的，它包含了很多原来用Logistic Regression和linear Regression所没有办法包含的function。</p>
+<p>Fully Connect Feedforward Network可以画成下图所示的结构，其中，每一排表示一个layer，每个layer里面的每一个球都代表一个neuron：</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/layers.png/" alt="img" style="zoom:40%;" /></p>
+<p>有如下特性：</p>
+<ul>
+<li>layer和layer之间neuron是两两互相连接的，layer 1的neuron的output会连接给layer 2的每一个neuron作为input。</li>
+<li>对整个neural network来说，它需要一个input，这个input就是一个feature的vector，而对layer 1的每一个neuron来说，它的input就是input layer的每一个dimension。</li>
+<li>最后那个layer L，由于它后面没有接其它东西了，所以它的output就是整个network的output。</li>
+<li>每一个layer有特定名字：
+<ul>
+<li><strong>input layer</strong>：输入层，严格来说，input layer其实不是一个layer，它跟其他layer不一样，不是由neuron所组成的</li>
+<li><strong>output layer</strong>：输出层，最后一层</li>
+<li><strong>hidden layer</strong>：隐藏层，Network的其他层</li>
+</ul>
+</li>
+<li>Deep Neural Network中的Deep是指有很多layers。</li>
+<li>每一个neuron里面的sigmoid function，在Deep Learning中被称为<strong>activation function</strong>（激励函数），事实上它不见得一定是sigmoid function，还可以是其他function（sigmoid function是从Logistic Regression迁移过来的，现在已经较少在Deep learning里使用了）。</li>
+</ul>
+<p><strong>因为layer和layer之间，所有的neuron都是两两连接，所以它叫Fully connected的network；因为现在传递的方向是从layer 1-&gt;2-&gt;3，由前往后传，所以它叫做Feedforward network</strong></p>
+<h3 id="matrix-operation矩阵运算">Matrix Operation（矩阵运算）</h3>
+<p>Neural Network的运作常用Matrix Operation的方式表示。即，可以用矩阵和向量把weight、bias和input表示出来，得到的output也是矩阵或者向量。</p>
+<p>因此，可以把每层所有的weights都以matrix的形式表示出来$W^i$。其中每一行对应的是一个neuron的在该层接收的weight，行数就是该层neuron的个数；列数是上一层neuron的个数。而input $x$，bias $b$和output $y$都是一个列向量，行数就是feature的个数（也是该层neuron的个数，neuron的本质就是把feature transform到另一个space)。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/neural-network-compute.png/" alt="img" style="zoom:40%;" /></p>
+<p>把这件事情写成矩阵运算的好处是，可以用GPU加速。GPU对矩阵的运算是比CPU要来的快的，所以我们写neural network的时候，习惯把它写成matrix operation，然后使用GPU来加速它。</p>
+<h3 id="output-layer">Output Layer</h3>
+<p>可以把Hidden Layer的部分看作<strong>feature extractor（特征提取器）</strong>，用来代替机器学习中需要人工进行的feature engineering。经过这个feature extractor得到的$x_1,&hellip;,x_k$就可以被当作一组新的feature。</p>
+<p>output layer实际是一个<strong>Multi-class classifier</strong>，它用经过feature extractor转换后的那一组比较好的feature（能够被很好地separate）进行分类。由于我们把output layer看做是一个Multi-class classifier，所以我们会在最后一个layer加上softmax function。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/output-layer.png/" alt="img" style="zoom:40%;" /></p>
+<h2 id="实例示范">实例示范</h2>
+<h3 id="问题描述手写数字识别">问题描述——手写数字识别</h3>
+<p>这里举一个手写数字识别的例子。input是一张image，对机器来说一张image实际上就是一个vector。假设这是一张16*16的image，那它有256个pixel，对机器来说，它是一个256维的vector，image中的每一个都对应到vector中的一个dimension。简单来说，我们把黑色的pixel的值设为1，白色的pixel的值设为0。</p>
+<p>而neural network的output，如果在output layer使用了softmax，那它的output就是一个突出极大值的Probability distribution。假设我们的output是10维的话（10个数字，0~9），那么这个output的每一维都对应到它可能是某一个数字的几率。实际上这个neural network的作用就是计算这张image成为10个数字的几率各自有多少，几率最大（softmax突出极大值的意义所在）的那个数字，就是机器的预测值。</p>
+<h3 id="dnn三步走">DNN三步走</h3>
+<h4 id="1-确定modelfunction-set">1. 确定model（function set）</h4>
+<p>因此，在这个问题里，我们唯一需要的就是一个function，这个function的input是一个256的vector，output是一个10维的vector，这个function就是neural network（这里我们用简单的全连接前馈网络）。因为输入输出维度已经确定，所以实际上这个network structure已经确定了一个function set（model）的形状，在这个function set里的每一个function都可以拿来做手写数字识别。接下来我们要做的事情是用gradient descent去计算出一组参数，挑一个最适合拿来做手写数字识别的function。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/example-application.png/" alt="img" style="zoom:40%;" /></p>
+<p>⚠️ input、output的dimension，加上network structure，就可以确定一个model的形状，前两个是容易知道的，而决定这个<strong>network的structure</strong>则是整个Deep Learning中最为关键的步骤。</p>
+<p>所以这里很重要的一件事情是，我们要对network structure进行设计，之前在机器学习的Logistic Regression和linear Regression，对model的structure是无需设计的。但是对neural network来说，我们现在已知的只有input是256维，output是10维，而中间要有几个hidden layer，每个layer要有几个neuron，都是需要我们自己去设计的，它们近乎是决定了function set长什么样子。所以如果network structure设计的很差，这个function set里面根本就没有好的function，那就会结果很差。</p>
+<p>机器学习需要认为地去抽取feature，DNN不需要；但是DNN只能凭借经验和直觉去设计层数和每层的neuron数量。这个时候需要比较抽取feature还是设计network structure更容易。</p>
+<h4 id="2-定义如何判断为好的function">2. 定义如何判断为好的function</h4>
+<p>由于现在我们做的是一个Multi-class classification，所以现在的target是一个10维的vector，只有在第i维对应数字i的地方，它的值是1，其他都是0。</p>
+<p>input这张image的256个pixel，通过这个neural network之后，会得到一个output，称之为$y$。而从这张image的label中转化而来的target，称之为$\hat y$，有了output 和target 之后，要做的事情是计算它们之间的cross entropy（交叉熵）$l(y,\hat y)=-\sum_{i=1}^{10}\hat y_ilny_i$，这个做法跟我们之前做Multi-class classification的时候是一模一样的。</p>
+<h4 id="3-选择最好的function">3. 选择最好的function</h4>
+<p>在deep learning里面用gradient descent，跟在linear regression里面使用没有什么差别，只是function和parameter变得更复杂了而已。</p>
+<p>现在$\theta$的里面是一大堆的weight、bias参数，先random找一个初始值，接下来去计算每一个参数对total loss的偏微分，把这些偏微分全部集合起来，就叫做gradient。有了这些偏微分以后，就可以更新所有的参数，都减掉learning rate乘上偏微分的值，这个process反复进行下去，最终找到一组好的参数，就做完deep learning的training了。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/dl-gradient.png/" alt="img" style="zoom:40%;" /></p>
+<p>你可能会问，个gradient descent的function式子到底是长什么样子呢？之前我们都是一步一步地把那个算式推导出来的，但是在neural network里面，有成百上千个参数，如果要一步一步地人工推导并求微分的话是比较困难的，甚至是不可行的。</p>
+<p>其实，我们现在不需要像以前一样自己去实现Backpropagation（反向传播），因为有很多的toolkit可以帮你计算Backpropagation，比如<strong>tensorflow、pytorch</strong></p>
+<h2 id="为什么需要deep-learning">为什么需要Deep Learning</h2>
+<p>因为网络层数越深，表现越好，一般来说，随着deep learning中的layers数量增加，error率不断降低。</p>
+<p>有一个理论是这样说的，任何连续的function，它input是一个N维的vector，output是一个M维的vector，它都可以用一个hidden layer的neural network来表示，只要你这个hidden layer的neuron够多，它可以表示成任何的function。既然一个hidden layer的neural network可以表示成任何的function，而在做machine learning的时候，需要的东西就只是一个function而已，那做deep有什么特殊的意义呢？后面会讲解。</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/universality-theorem.png/" alt="img" style="zoom:40%;" /></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yu Sun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+          <a href="/tags/nlp/">NLP</a>
+          <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/logistic_regression/">
+            <span class="next-text nav-default">Logistic Regression</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:cnsdytsy@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/15074966/ysun" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://github.com/JuliaSun623" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.instagram.com/chubbyfishfish/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>olOwOlo</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
