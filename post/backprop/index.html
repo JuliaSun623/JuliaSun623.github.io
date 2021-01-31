@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Backpropagation - Yu Sun</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yu Sun" /><meta name="description" content="Gradient Descent gradient descent的使用方法，跟前面讲到的linear Regression或Logistic Regression是一样的，唯一的区别就在于" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/backprop/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Backpropagation" />
+<meta property="og:description" content="Gradient Descent gradient descent的使用方法，跟前面讲到的linear Regression或Logistic Regression是一样的，唯一的区别就在于" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/backprop/" />
+<meta property="article:published_time" content="2021-01-31T16:20:46+08:00" />
+<meta property="article:modified_time" content="2021-01-31T16:20:46+08:00" />
+<meta itemprop="name" content="Backpropagation">
+<meta itemprop="description" content="Gradient Descent gradient descent的使用方法，跟前面讲到的linear Regression或Logistic Regression是一样的，唯一的区别就在于">
+<meta itemprop="datePublished" content="2021-01-31T16:20:46+08:00" />
+<meta itemprop="dateModified" content="2021-01-31T16:20:46+08:00" />
+<meta itemprop="wordCount" content="3983">
+
+
+
+<meta itemprop="keywords" content="机器学习,NLP,深度学习,反向传播," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Backpropagation"/>
+<meta name="twitter:description" content="Gradient Descent gradient descent的使用方法，跟前面讲到的linear Regression或Logistic Regression是一样的，唯一的区别就在于"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Yu Sun&#39;s Blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Backpropagation</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%9D%8E%E5%AE%8F%E6%AF%85/"> 机器学习李宏毅 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#gradient-descent">Gradient Descent</a></li>
+        <li><a href="#chain-rule链式法则">Chain Rule（链式法则）</a></li>
+        <li><a href="#反向传播">反向传播</a>
+          <ul>
+            <li><a href="#forward-pass">Forward Pass</a></li>
+            <li><a href="#backward-pass">Backward Pass</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="gradient-descent">Gradient Descent</h2>
+<p>gradient descent的使用方法，跟前面讲到的linear Regression或Logistic Regression是一样的，唯一的区别就在于当它用在neural network的时候，network parameters $\theta=w_1,w_2,&hellip;,b_1,b_2,&hellip;$里面可能会有将近million个参数。</p>
+<p>所以现在最大的困难是，如何有效地把这个近百万维的vector计算出来，这就是Backpropagation要做的事情。所以<strong>Backpropagation并不是一个和gradient descent不同的training的方法，它就是gradient descent，它只是一个比较有效率的算法</strong>，让你在计算这个gradient的vector的时候更有效率。</p>
+<h2 id="chain-rule链式法则">Chain Rule（链式法则）</h2>
+<p>下图表示了链式法则：</p>
+<p><img src="https://s3.ax1x.com/2021/01/30/ykGahq.jpg" alt="img" style="zoom:40%;" /></p>
+<h2 id="反向传播">反向传播</h2>
+<p>对整个neural network，我们定义了一个loss function $L(\theta)=\sum_{n=1}^NC^n(\theta)$，它等于所有training data的loss之和。</p>
+<p>我们把training data里任意一个样本点代到neural network里面，它会output一个$y^n$，我们把这个output跟样本点本身的label标注的target $\hat y^n$作cross entropy，这个<strong>交叉熵定义了output 和target 之间的距离</strong>。如果cross entropy比较大，说明output和target之间距离很远，这个network的parameter的loss是比较大的；反之则说明这组parameter是比较好的。然后把所有training data的cross entropy 加起来，得到total loss ，这就是我们的loss function，用这个对某一个参数w做偏微分，得到$\frac{\part L(\theta)}{\part w}=\sum_{n=1}^N\frac{\part C^n(\theta)}{\part w}$。</p>
+<p>这个表达式告诉我们，只需要考虑如何计算对某一笔data的$\frac{\part C^n(\theta)}{\part w}$，再将所有training data的cross entropy对参数$w$的偏微分累计求和，就可以把total loss对某一个参数$w$的偏微分给计算出来。</p>
+<p>我们先考虑某一个neuron，假设只有两个input ，通过这个neuron，我们先得到$z=b+w_1x_1+x_2+x_2$，然后经过activation function从这个neuron中output出来，作为后续neuron的input，再经过一系列操作后得到最终的output。</p>
+<p>因此现在的问题是如何计算$\frac{\part C}{\part w}$。按照链式法则，可以拆分为两项：$\frac{\part C}{\part w}=\frac{\part z}{\part w}\frac{\part C}{\part z}$，这两项中前一项称为Forward pass，后一项称为Backward pass。</p>
+<h3 id="forward-pass">Forward Pass</h3>
+<p><strong>求$\frac{\part z}{\part w}$，就是看$w$前面连接的input是什么，那微分后的值就是什么</strong>。因此只要计算出neural network里面每一个neuron的output就可以知道任意的$z$对$w$的偏微分。</p>
+<ul>
+<li>input layer作为neuron的输入时，$w_1$前面连接的是$x_1$，所以微分值就是$x_1$；$w_2$前面连接的是$x_2$，所以微分值就是$x_2$。</li>
+<li>hidden layer作为neuron的输入时，该neuron的input是前一层neuron的output，所以$\frac{\part z}{\part z}$的值就是前一层的$z$经过activation function之后输出的值</li>
+</ul>
+<p>下图中的数据是假定activation function为sigmoid function得到的：</p>
+<p><img src="https://gitee.com/Sakura-gh/ML-notes/raw/master/img/forward-pass.png/" alt="img" style="zoom:40%;" /></p>
+<h3 id="backward-pass">Backward Pass</h3>
+<p>这里我们依旧假设activation function是sigmoid function</p>
+<h4 id="公式推导">公式推导</h4>
+<p>$z$通过activation function得到$a$，这个neuron的output是$a=\sigma(z)$。接下来$a$会乘上某一个weight ，再加上其它的value得到$z'$，它是下一个neuron activation function的input。然后$a$又会乘上另一个weight $w_4$ ，再加上其它value得到$z''$，后面还会进行其他运算。这里我们先考虑下一步会发生什么事情：
+$$
+\frac{\part C}{\part z}=\frac{\part a}{\part z}\frac{\part C}{\part a}
+$$
+这里的$\frac{\part a}{\part z}$实际上就是activation function的微分（在这里就是$\sigma'(z)$）。接下来要算$\frac{\part C}{\part a}$。由于$a$会影响$z'$和$z''$，而$z'$和$z''$会影响$C$，所以通过chain rule可以得到：
+$$
+\frac{\part C}{\part a}=\frac{\part z'}{\part a}\frac{\part C}{\part z'}+\frac{\part z''}{\part a}\frac{\part C}{\part z''}
+$$
+这里的$\frac{\part z'}{\part a}=w_3$，$\frac{\part z''}{\part a}=w_4$，剩下两个偏微分先假设已经通过某种方法算出来了，然后回过头去就可以把$\frac{\part C}{\part z}$算出来：
+$$
+\frac{\part C}{\part a}=\frac{\part a}{\part z}\frac{\part C}{\part a}=\sigma'(z)[w_3\frac{\part C}{\part z'}+w_4\frac{\part C}{\part z''}]
+$$
+<img src="https://s3.ax1x.com/2021/01/31/yEnXge.jpg" alt="img" style="zoom:40%;" /></p>
+<h4 id="另一种理解">另一种理解</h4>
+<p>可以理解为，现在有另外一个neuron，它不在我们原来的network里面。在下图中它被画成三角形，这个neuron的input就是$\frac{\part C}{\part z'}$和$\frac{\part C}{\part z''}$，分别乘上$w_3,w_4$，相加后再乘上activation function的微分 ，就可以得到output $\frac{\part C}{\part z}$。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yE3DRP.jpg" alt="img" style="zoom:40%;" /></p>
+<p>⚠️ 这里的$\sigma'(z)$是一个常数，它并不是一个function。因为$z$在计算forward pass的时候就已经被决定好了，$z$是一个固定的值。</p>
+<p>所以这个neuron其实跟我们之前看到的sigmoid function是不一样的，它并不是把input通过一个non-linear进行转换，而是直接把input乘上一个常数，就得到了output。因此这个neuron被画成三角形，代表它跟我们之前看到的圆形的neuron的运作方式是不一样的。</p>
+<h4 id="计算剩下两个偏微分">计算剩下两个偏微分</h4>
+<p>最后需要解决的问题是，怎么计算$\frac{\part C}{\part z'}$和$\frac{\part C}{\part z''}$这两项。分成下面两种情况讨论：</p>
+<h5 id="output-layer">Output Layer</h5>
+<p>假设蓝色的这个neuron已经是hidden layer的最后一层了，也就是说连接在$z'$和$z''$后的这两个红色的neuron已经是output layer，它的output就已经是整个network的output了，这个时候计算就比较简单：
+$$
+\frac{\part C}{\part z'}=\frac{\part y_1}{\part z'}\frac{\part C}{\part y_1}
+$$
+其中$\frac{\part y_1}{\part z'}$就是output layer的activation function (softmax) 对$z'$的偏微分；而$\frac{\part C}{\part y_1}$就是loss对的$y_1$偏微分，它取决于你的loss function是怎么定义的，也就是你的output和target之间是怎么evaluate的，可以用cross entropy，也可以用mean square error，用不同的定义得到的值就不一样。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yE8VJI.jpg" alt="img" style="zoom:40%;" /></p>
+<h5 id="non-output-layer">Non Output Layer</h5>
+<p>假设现在红色的neuron并不是整个network的output，那$z'$经过红色neuron的activation function得到$a'$，然后output $a'$和$w_5,w_6$相乘并加上其他东西分别得到$z_a,z_b$。根据之前的推导证明类比，如果知道$\frac{\part C}{\part z_a}$和$\frac{\part C}{\part z_b}$，我们就可以计算$\frac{\part C}{\part z'}$，另一个同理。</p>
+<p>所以，如果知道$z'$和$z''$就可以知道$z$，知道$z_a$和$z_b$就可以知道$z'$，&hellip;&hellip; ，以此类推，直到找到output layer，我们可以算出确切的值，然后再一层一层反推回去。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yE8zkj.jpg" alt="img" style="zoom:40%;" /></p>
+<p>你可能会想说，这个方法听起来挺让人崩溃的，每次要算一个微分的值，都要一路往后走，一直走到network的output，如果写成表达式的话，一层一层往后展开，感觉会是一个很可怕的式子，但是，实际上并不是这个样子做的。</p>
+<p>假设如下图，现在有6个neuron，每一个neuron的activation function的input分别是$z_1,z_2,&hellip;,z_6$，我们要计算$C$对这些input的偏微分。按照原来的思路，我们想要知道的$z_1$偏微分，就要去算$z_3,z_4$的偏微分，想要知道$z_3,z_4$的偏微分，就又要去计算两遍$z_5,z_6$的偏微分，因此如果我们是从开始两个偏微分开始计算，那就没有效率。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yEtP1I.jpg" alt="img" style="zoom:40%;" /></p>
+<p>但是，如果你反过来先去计算$z_5,z_6$的偏微分的话，这个过程就突然变得有效率起来。这个过程就称为Backward pass。</p>
+<p>在做Backward pass的时候，实际上的做法就是建另外一个neural network，本来正向neural network里面的activation function都是sigmoid function。而现在计算Backward pass的时候，就是建一个反向的neural network，它的activation function就是一个运算放大器op-amp，每一个反向neuron的input是loss 对后面一层layer的的偏微分。output则是loss 对这个neuron的的偏微分。做Backward pass就是通过这样一个反向neural network的运算，把loss 对每一个neuron的的偏微分都给算出来。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yEtrDK.jpg" alt="img" style="zoom:40%;" /></p>
+<h2 id="总结">总结</h2>
+<p><strong>Forward pass</strong>：每个neuron的activation function的output，就是它所连接的weight的$\frac{\part z}{\part w}$。</p>
+<p><strong>Backward pass</strong>：建一个与原来方向相反的neural network，它的三角形neuron的output就是$\frac{\part C}{\part z}$。</p>
+<p>把通过forward pass得到的和通过backward pass得到的乘起来就可以得到$C$对$w$的偏微分。</p>
+<p><img src="https://s3.ax1x.com/2021/01/31/yEtg4H.jpg" alt="img" style="zoom:40%;" /></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yu Sun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+          <a href="/tags/nlp/">NLP</a>
+          <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+          <a href="/tags/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">反向传播</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/dl/">
+            <span class="next-text nav-default">Deep Learning</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:cnsdytsy@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/15074966/ysun" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://github.com/JuliaSun623" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.instagram.com/chubbyfishfish/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>olOwOlo</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
