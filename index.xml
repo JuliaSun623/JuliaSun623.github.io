@@ -97,5 +97,14 @@
       <description>Yu Sun EDUCATION Fudan University (Sep 2017-June 2021) Major: Computer Science GPA: 3.72/4.0 (top 5%, 5/93) Major GPA: 3.83/4.0 Relevant Course: Linear Algebra (A), Mathematical Analysis (A), Programming Language (A), Data Structure (A), Discrete Mathematics (A), Introduction to Database (A), Principles of Computer Systems (A), Operating System (A-), Probability and Statistics (A), Computer Network (A), Natural Language Process (A-), Digital Image Process(A), Software Engineer(A) Honor: The Second Prize Scholarship (three</description>
     </item>
     
+    <item>
+      <title>Covolutional Neural Network</title>
+      <link>http://localhost:1313/post/cnn/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/cnn/</guid>
+      <description>为什么在图像上使用CNN CNN v.s. DNN CNN一般用作影像处理，把图片转化成pixel，输出的是N个class。第1个layer是最底层的特征，越往后</description>
+    </item>
+    
   </channel>
 </rss>

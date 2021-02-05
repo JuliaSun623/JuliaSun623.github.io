@@ -25,5 +25,14 @@
       <description>深度学习历史 1958：Perceptron(linear model)，提出感知机 和Logistic Regression类似，只是少了sigm</description>
     </item>
     
+    <item>
+      <title>Covolutional Neural Network</title>
+      <link>http://localhost:1313/post/cnn/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/cnn/</guid>
+      <description>为什么在图像上使用CNN CNN v.s. DNN CNN一般用作影像处理，把图片转化成pixel，输出的是N个class。第1个layer是最底层的特征，越往后</description>
+    </item>
+    
   </channel>
 </rss>

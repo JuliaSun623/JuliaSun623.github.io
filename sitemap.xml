@@ -182,4 +182,16 @@
     <priority>0.5</priority>
   </url>
   
+  <url>
+    <loc>http://localhost:1313/tags/cnn/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/post/cnn/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
 </urlset>
