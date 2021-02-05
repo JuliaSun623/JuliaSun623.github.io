@@ -6,7 +6,16 @@
     <description>Recent content in 机器学习 on Yu Sun</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 31 Jan 2021 16:20:46 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Feb 2021 13:51:49 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Covolutional Neural Network</title>
+      <link>http://localhost:1313/post/cnn/</link>
+      <pubDate>Mon, 01 Feb 2021 13:51:49 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/cnn/</guid>
+      <description>为什么在图像上使用CNN CNN v.s. DNN CNN一般用作影像处理，把图片转化成pixel，输出的是N个class。第1个layer是最底层的特征，越往后</description>
+    </item>
+    
     <item>
       <title>Backpropagation</title>
       <link>http://localhost:1313/post/backprop/</link>
@@ -86,15 +95,6 @@
       
       <guid>http://localhost:1313/post/regression/</guid>
       <description>预测宝可梦进化后的CP (Combat Power)值：期望根据已有的宝可梦进化前后的信息，来预测某只宝可梦进化后的CP值的大小。 设定参数 输入$x$：一只宝</description>
-    </item>
-    
-    <item>
-      <title>Covolutional Neural Network</title>
-      <link>http://localhost:1313/post/cnn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/post/cnn/</guid>
-      <description>为什么在图像上使用CNN CNN v.s. DNN CNN一般用作影像处理，把图片转化成pixel，输出的是N个class。第1个layer是最底层的特征，越往后</description>
     </item>
     
   </channel>
