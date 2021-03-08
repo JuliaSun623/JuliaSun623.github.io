@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>论文阅读 on Yu Sun</title>
+    <link>http://localhost:1313/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
+    <description>Recent content in 论文阅读 on Yu Sun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Mar 2021 09:47:17 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DocRED: A Large-Scale Document-Level Relation Extraction Dataset</title>
+      <link>http://localhost:1313/post/docred/</link>
+      <pubDate>Mon, 08 Mar 2021 09:47:17 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/docred/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
